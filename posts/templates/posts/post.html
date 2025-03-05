@@ -1,0 +1,127 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+    <style>
+        .container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .search-input {
+            width: 50%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .post-list {
+            width: 60%;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background: #f9f9f9;
+            text-align: left;  /* Căn lề trái */
+        }
+        .pagination {
+            margin-top: 20px;
+        }
+        .create-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background: pink;
+            color: black;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+        }
+        .create-btn:hover {
+            background: #ff85a2;
+        }
+        .bottom-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 60%;
+            margin: auto;
+            margin-top: 20px;
+        }
+        
+        .create-btn {
+            padding: 8px 15px;
+            background: pink;
+            color: black;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        .create-btn:hover {
+            background: #ff85a2;
+        }
+        
+        .pagination {
+            display: flex;
+            gap: 10px;
+        }
+        .post-title {
+            font-weight: bold; /* In đậm */
+            font-size: 18px;  /* Chữ to hơn */
+            margin-bottom: 10px;  /* Khoảng cách giữa các bài viết */
+        }
+        
+        .post-title a {
+            text-decoration: none;  /* Bỏ gạch chân link */
+            color: #333; /* Màu chữ tối hơn để dễ đọc */
+        }
+        
+        .post-title a:hover {
+            color: #ff85a2; /* Màu hồng khi hover */
+        }
+    </style>
+
+    <div class="container">
+        <h2>Tìm kiếm bài viết</h2>
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="Search...">
+            <button>🔍</button>
+        </div>
+
+        <div class="post-list">
+            {% for post in posts %}
+                <p class="post-title">
+                    <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a>
+                </p>
+            {% empty %}
+                <p class="post-title">Chưa có bài viết nào.</p>
+            {% endfor %}
+        </div>
+        
+
+        <div class="bottom-bar">
+            <!-- Nút tạo bài viết (bên trái) -->
+            <a href="{% url 'create_post' %}" class="create-btn">Create bài viết mới</a>
+        
+            <!-- Phân trang (bên phải) -->
+            <div class="pagination">
+                {% if posts.has_previous %}
+                    <a href="?page=1">1</a>
+                    <a href="?page={{ posts.previous_page_number }}">«</a>
+                {% endif %}
+                <span>Trang {{ posts.number }} / {{ posts.paginator.num_pages }}</span>
+                {% if posts.has_next %}
+                    <a href="?page={{ posts.next_page_number }}">»</a>
+                    <a href="?page={{ posts.paginator.num_pages }}">last</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+    <style>
+        /* Căn giữa form login */
+        .login-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: white;
+        }
+        .login-container {
+            width: 350px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .login-container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .remember-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .remember-container input {
+            margin-right: 5px;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            background: pink; /* Màu hồng */
+            color: black; /* Chữ màu đen */
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .login-btn:hover {
+            background: #ff85a2; /* Màu hồng đậm hơn khi hover */
+        }
+        .register-link {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+
+    <div class="login-page">
+        <div class="login-container">
+            <h2>Sign In</h2>
+            <form method="post">
+                {% csrf_token %}
+                <input type="text" name="username" placeholder="Email address" class="form-input" required>
+                <input type="password" name="password" placeholder="Password" class="form-input" required>
+                <div class="remember-container">
+                    <label><input type="checkbox"> Remember me</label>
+                    <a href="#">Forgot password?</a>
+                </div>
+                <button type="submit" class="login-btn">SIGN IN</button>
+            </form>
+            
+            <div class="register-link">
+                Not a member? <a href="{% url 'register' %}">Register</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

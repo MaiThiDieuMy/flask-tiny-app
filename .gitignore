@@ -1,0 +1,10 @@
+# Bỏ qua môi trường ảo
+venv/
+
+# Bỏ qua database SQLite
+db.sqlite3
+
+# Bỏ qua cache của Python
+__pycache__/
+*.pyc
+*.pyo

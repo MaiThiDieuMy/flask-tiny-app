@@ -1,0 +1,59 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+<style>
+    .container {
+        width: 50%;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background: #f9f9f9;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-top: 10px;
+    }
+
+    input[type="text"], textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-top: 5px;
+    }
+
+    textarea {
+        height: 150px;
+    }
+
+    .submit-btn {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background: pink;
+        color: black;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        text-align: center;
+        margin-top: 15px;
+        cursor: pointer;
+    }
+
+    .submit-btn:hover {
+        background: #ff85a2;
+    }
+</style>
+
+<div class="container">
+    <h2>Tạo bài viết mới</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="submit-btn">Submit</button>
+    </form>
+</div>
+{% endblock %}
