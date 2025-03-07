@@ -1,0 +1,128 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+    <h2>Quản lý người dùng</h2>
+
+    <!-- Form tìm kiếm người dùng -->
+    <form method="GET">
+        <input type="text" name="search" placeholder="Tìm kiếm người dùng..." />
+        <button type="submit">Tìm kiếm</button>
+    </form>
+
+    <!-- Form thao tác với người dùng -->
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Select</th> <!-- Cột chọn người dùng -->
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Trạng thái</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td><input type="checkbox" name="selected_users" value="{{ user.id }}"></td> <!-- Checkbox để chọn người dùng -->
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            {% if request.user.is_blocked %}
+                                Bị khóa
+                            {% else %}
+                                Hoạt động
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if request.user.is_blocked %}
+                                <a href="{% url 'unblock_user' user.id %}" class="button unblock">Mở khóa</a>
+                            {% else %}
+                                <a href="{% url 'block_user' user.id %}" class="button block">Khóa</a>
+                            {% endif %}
+                            <a href="{% url 'reset_password' user.id %}" class="button resetpass">Reset mật khẩu</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Các nút thao tác với người dùng đã chọn -->
+        <button type="submit" name="action" value="block" class="button block">Khóa người dùng đã chọn</button>
+        <button type="submit" name="action" value="unblock" class="button unblock">Mở khóa người dùng đã chọn</button>
+    </form>
+
+    <!-- Phân trang -->
+    <div class="pagination">
+        {% if users.has_previous %}
+            <a href="?page=1">&laquo; First</a>
+            <a href="?page={{ users.previous_page_number }}">Previous</a>
+        {% endif %}
+        <span class="current">
+            Trang {{ users.number }} của {{ users.paginator.num_pages }}.
+        </span>
+        {% if users.has_next %}
+            <a href="?page={{ users.next_page_number }}">Next</a>
+            <a href="?page={{ users.paginator.num_pages }}">Last &raquo;</a>
+        {% endif %}
+    </div>
+
+    <style>
+        /* CSS cho bảng người dùng và các nút thao tác */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table th, table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        table th {
+            background-color: #f2f2f2;
+        }
+
+        /* CSS cho các nút Block, Unblock, Reset mật khẩu */
+        .button {
+            padding: 5px 10px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .block {
+            background-color: red;
+        }
+
+        .unblock {
+            background-color: green;
+        }
+
+        .resetpass {
+            background-color: blue;
+        }
+
+        /* CSS cho phân trang */
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .pagination a {
+            text-decoration: none;
+            padding: 5px 10px;
+            background-color: #ddd;
+            margin: 0 5px;
+            border-radius: 5px;
+        }
+
+        .pagination .current {
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}

@@ -90,10 +90,13 @@
 
     <div class="container">
         <h2>Tìm kiếm bài viết</h2>
-        <div class="search-box">
-            <input type="text" class="search-input" placeholder="Search...">
-            <button>🔍</button>
-        </div>
+        <!-- Form tìm kiếm -->
+        <form method="GET">
+            <div class="search-box">
+                <input type="text" class="search-input" name="q" placeholder="Search..." value="{{ query }}">
+                <button type="submit">🔍</button>
+            </div>
+        </form>
 
         <div class="post-list">
             {% for post in posts %}

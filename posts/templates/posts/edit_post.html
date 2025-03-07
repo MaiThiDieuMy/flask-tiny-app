@@ -1,0 +1,48 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+    <style>
+        .container {
+            width: 60%;
+            margin: auto;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            text-align: left;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .save-btn {
+            display: block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .save-btn:hover {
+            background: #45a049;
+        }
+    </style>
+            
+    <div class="container">
+        <h2>Chỉnh sửa bài viết</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="title">Tiêu đề:</label>
+            <input type="text" id="title" name="title" value="{{ post.title }}" required>
+
+            <label for="content">Nội dung:</label>
+            <textarea id="content" name="content" required>{{ post.content }}</textarea>
+
+            <button type="submit" class="save-btn">Lưu thay đổi</button>
+        </form>
+    </div>
+{% endblock %}

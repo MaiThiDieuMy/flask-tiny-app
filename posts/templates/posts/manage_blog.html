@@ -1,8 +1,88 @@
 {% extends 'posts/base.html' %}
 
 {% block content %}
-    <div class="container">
-        <h2>Quản lý Blog</h2>
-        <p>Trang này dành cho việc quản lý các bài viết.</p>
-    </div>
+  <!-- CSS Styles -->
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+  
+    table th, table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+  
+    button, .button {
+      padding: 10px 15px;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  
+    .edit-btn {
+      background-color: #ffa500; /* Màu cam */
+    }
+  
+    .delete-btn {
+      background-color: #ff6347; /* Màu đỏ */
+    }
+  
+    .delete-selected-btn {
+      background-color: #ff4500; /* Màu đỏ đậm */
+      margin-top: 20px;
+    }
+  
+    .delete-selected-btn:hover, .button:hover {
+      background-color: #e44d26; /* Màu đỏ sẫm */
+    }
+  </style>
+  <h2>Quản lý bài viết của bạn</h2>
+
+  <!-- Form để xử lý xóa bài viết -->
+  <form method="POST" action="{% url 'delete_selected_posts' %}">
+    {% csrf_token %}
+    <table>
+      <thead>
+        <tr>
+          <th><input type="checkbox" id="select_all" /> Chọn tất cả</th>
+          <th>Tựa đề</th>
+          <th>Ngày tạo</th>
+          <th>Thao tác</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for post in posts %}
+          <tr>
+            <td><input type="checkbox" name="selected_posts" value="{{ post.id }}" /></td>
+            <td>{{ post.title }}</td>
+            <td>{{ post.created_at }}</td>
+            <td>
+              <a href="{% url 'edit_post' post.id %}" class="button edit-btn">Sửa</a>
+              <a href="{% url 'delete_post' post.id %}" class="button delete-btn">Xóa</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <!-- Nút xóa bài viết đã chọn -->
+    <button type="submit" class="delete-selected-btn">Xóa các bài viết đã chọn</button>
+  </form>
+
+  <a href="{% url 'home' %}">Quay lại trang chủ</a>
+      <!-- Đoạn mã JavaScript cho việc chọn tất cả checkbox -->
+<script>
+    document.getElementById('select_all').addEventListener('change', function() {
+      const checkboxes = document.querySelectorAll('input[name="selected_posts"]');
+      checkboxes.forEach(checkbox => {
+        checkbox.checked = this.checked;
+      });
+    });
+  </script>
+
 {% endblock %}
+
+
